@@ -76,35 +76,36 @@ int main(int argc, char ** argv) {
 		return -1;
 	}
 
-	printer("accept\n");
-	client_sockfd = accept(sockfd, (struct sockaddr *)&client, &socklen);
-	if(client_sockfd < 0 ) {
-		printer("Accept failure\n");
-		return -1;
-	}
+	while(1) {
+		printer("accept\n");
+		client_sockfd = accept(sockfd, (struct sockaddr *)&client, &socklen);
+		if(client_sockfd < 0 ) {
+			printer("Accept failure\n");
+			continue;
+		}
+		recv(client_sockfd, buffer, SIZE, 0);
+		int file_size = atoi(buffer);
+		printer("File size = %d\n", file_size);
 
-	recv(client_sockfd, buffer, SIZE, 0);
-	int file_size = atoi(buffer);
-	printer("File size = %d\n", file_size);
+		received_file = fopen(filename, "wb");
+		if (received_file == NULL) {
+			printer("fopen failure\n");
+			close(client_sockfd);
+			continue;
+		}
 
-	received_file = fopen(filename, "wb");
-	if (received_file == NULL) {
-		printer("fopen failure\n");
-		return -1;
-	}
-
-	printer("Receving file...\n");
-	int remain_data = file_size;
-	while (((len = recv(client_sockfd, buffer, SIZE, 0)) > 0) && (remain_data > 0)) {
-		fwrite(buffer, sizeof(char), len, received_file);
-		remain_data -= len;
-		printer("Receive %d bytes ( left %d bytes ) and write to %s\n", (int)len, remain_data, filename);
-	}
-	printer("len = %d\n", (int)len);
-	fclose(received_file);
-	close(client_sockfd);
+		printer("Receving file...\n");
+		int remain_data = file_size;
+		while (((len = recv(client_sockfd, buffer, SIZE, 0)) > 0) && (remain_data > 0)) {
+			fwrite(buffer, sizeof(char), len, received_file);
+			remain_data -= len;
+			printer("Receive %d bytes ( left %d bytes ) and write to %s\n", (int)len, remain_data, filename);
+		}
+		printer("len = %d\n", (int)len);
+		fclose(received_file);
+		close(client_sockfd);
+	}	
 	close(sockfd);
-		
 
 
 	return 0;
