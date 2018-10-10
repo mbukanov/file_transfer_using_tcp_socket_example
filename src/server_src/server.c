@@ -26,7 +26,7 @@ int main(int argc, char ** argv) {
 	while ( (res = getopt(argc,argv,"df:hp:")) != -1) { 
 		switch(res) { 
 			case 'd': 
-				DBG = 1;
+				setDebug(1);
 				break;
 			case 'f':
 				memset(filename, 0, FILENAME_SIZE);

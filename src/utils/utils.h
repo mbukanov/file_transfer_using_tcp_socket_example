@@ -1,12 +1,9 @@
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <stdarg.h>
 
-static int DBG = 0;
+void setDebug(int enable);
+void printer(char *fmt, ...);
 
-void printer(char *fmt, ...) {
-    if( ! DBG ) return;
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
-}
-
+#endif

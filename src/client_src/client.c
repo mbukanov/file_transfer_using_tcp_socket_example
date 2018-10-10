@@ -39,7 +39,7 @@ int main(int argc, char ** argv) {
 	while ( (res = getopt(argc,argv,"df:hs:p:")) != -1) {
 		switch(res) {
 			case 'd':
-				DBG = 1;
+				setDebug(1);
 				break;
 			case 'h':
 				print_help();
