@@ -113,8 +113,7 @@ int main(int argc, char ** argv) {
 
 	printf("Sent %d bytes for the size\n", len);
 	remain_data = file_stat.st_size;
-	printer("remain_data = %d\n", remain_data);
-	while (((sent_bytes = sendfile(sockfd, fd, NULL, 1024)) > 0) && (remain_data > 0)) {
+	while (((sent_bytes = sendfile(sockfd, fd, NULL, DATA_SIZE)) > 0) && (remain_data > 0)) {
 		remain_data -= sent_bytes;
 		printf("Server sent %d bytes, left %d bytes\n", sent_bytes, remain_data);
 	}

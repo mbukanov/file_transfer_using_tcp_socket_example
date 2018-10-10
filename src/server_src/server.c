@@ -46,7 +46,7 @@ int main(int argc, char ** argv) {
 	int client_sockfd = 0;
 	ssize_t len = 0;
 	socklen_t socklen = 0;
-	const int SIZE = 1024;
+	const int SIZE = DATA_SIZE;
 	char buffer[SIZE];
 	FILE *received_file = NULL;
 	struct sockaddr_in server, client;
@@ -99,9 +99,9 @@ int main(int argc, char ** argv) {
 		while (((len = recv(client_sockfd, buffer, SIZE, 0)) > 0) && (remain_data > 0)) {
 			fwrite(buffer, sizeof(char), len, received_file);
 			remain_data -= len;
-			printer("Receive %d bytes ( left %d bytes ) and write to %s\n", (int)len, remain_data, filename);
+//			printer("Receive %d bytes ( left %d bytes ) and write to %s\n", (int)len, remain_data, filename);
 		}
-		printer("len = %d\n", (int)len);
+		printer("Received %d/%d bytes\n", (file_size - remain_data), file_size);
 		fclose(received_file);
 		close(client_sockfd);
 	}	
