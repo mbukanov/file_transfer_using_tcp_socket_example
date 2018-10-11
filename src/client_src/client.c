@@ -66,6 +66,13 @@ int main(int argc, char ** argv) {
 	int fd = 0;
 	int remain_data;
 	int offset = 0;
+	
+	fd = open(filename, O_RDONLY);
+	if(fd == -1) {
+		printer("Error opening file %s\n", filename);
+		return -1;
+	}
+
 	memset(&server, 0, sizeof(struct sockaddr_in));
 
 	printer("Server ip = %s\n", server_ip);
@@ -86,13 +93,6 @@ int main(int argc, char ** argv) {
 	if (connect(sockfd, (struct sockaddr *)&server, sizeof(struct sockaddr)) == -1) {
 		printer("Connection failure\n");
 		close(sockfd);
-		return -1;
-	}
-
-
-	fd = open(filename, O_RDONLY);
-	if (fd == -1) {
-		printer("Error opening file %s\n", filename);
 		return -1;
 	}
 
